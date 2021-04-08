@@ -17,8 +17,9 @@ function getAssignments(req, res){
 
 // Récupérer tous les assignments (GET), AVEC PAGINATION
 function getAssignments(req, res) {
-  var aggregateQuery = Assignment.aggregate();
-  
+  var aggregateQuery = Assignment.aggregate([{$match: {rendu: true}}]);
+
+  let assignmentsRendu;
   Assignment.aggregatePaginate(
     aggregateQuery,
     {
