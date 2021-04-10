@@ -12,12 +12,13 @@ mongoose.Promise = global.Promise;
 // remplacer toute cette chaine par l'URI de connexion à votre propre base dans le cloud s
 //const uri = 'mongodb+srv://mb:P7zM3VePm0caWA1L@cluster0.zqtee.mongodb.net/assignments?retryWrites=true&w=majority';
 //const uri = 'mongodb+srv://hMirado:tsangy090197@clusterassignments.iulbf.mongodb.net/assignments?retryWrites=true&w=majority';
-const uri = 'mongodb://localhost:27017/assignments';
+const uri = 'mongodb+srv://sedera:sederamongodb@cluster0.sqoyq.mongodb.net/assignments?retryWrites=true&w=majority';
+//const uri = 'mongodb://localhost:27017/assignments';
 
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify:false
+  useFindAndModify: false
 };
 
 mongoose.connect(uri, options)
@@ -25,13 +26,13 @@ mongoose.connect(uri, options)
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
     console.log("at URI = " + uri);
     console.log("vérifiez with http://localhost:8010/api/assignments que cela fonctionne")
-    },
+  },
     err => {
       console.log('Erreur de connexion: ', err);
     });
 
 // Pour accepter les connexions cross-domain (CORS)
-app.use((req, res, next) =>  {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -39,7 +40,7 @@ app.use((req, res, next) =>  {
 });
 
 // Pour les formulaires
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 let port = process.env.PORT || 8010;
@@ -52,9 +53,11 @@ app.route(prefix + '/assignments')
   .post(assignment.postAssignment)
   .put(assignment.updateAssignment);
 
+
 app.route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
+
 
 /**
  * Route authentication
