@@ -53,15 +53,12 @@ router.post('/register', (req, res) => {
             user.save((error) => {
                 if (error) {
                     if (error.code === 11000) {
-                        console.log('email est déjà utilisé');
                         res.send("L'email est déjà utilisé");
                     }
                     if (error.errors) {
                         if (error.errors.password) {
-                            console.log(error.errors.password.message);
                             res.send(error.errors.password.message);
                         } else {
-                            console.log(error);
                             res.send(error);
                         }
                     } else {
