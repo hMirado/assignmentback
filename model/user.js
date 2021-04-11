@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let bcrypt = require('bcrypt');
+let saltRounds = 10;
+var aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 /**
  * Validation de la longueur du mots de passe
@@ -40,15 +41,19 @@ const passwordValidators = [
  * SCHEMA
  * @type {never}
  */
-const userSchema = Schema({
-    email: {type: String, required: true},
+let UserSchema = Schema({
+    email: {type: String, required: true, unique: true},
     password: {type: String, required: true, validate: passwordValidators},
     lName: {type: String, required: true},
     fName: String,
+    image: String,
+    id: {type: String, required: true},
     role: {type: String, required: true}
 });
 
-userSchema.pre('save', function (next) {
+UserSchema.plugin(aggregatePaginate);
+
+UserSchema.pre('save', function (next) {
     if (!this.isModified('password')) return next();
 
     bcrypt.hash(this.password, saltRounds, (error, hash) => {
@@ -58,8 +63,9 @@ userSchema.pre('save', function (next) {
     })
 });
 
-userSchema.methods.comparePassword = function(password) {
+UserSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+
+module.exports = mongoose.model('User', UserSchema);
