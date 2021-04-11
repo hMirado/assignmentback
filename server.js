@@ -4,6 +4,7 @@ let bodyParser = require('body-parser');
 
 let assignment = require('./routes/assignments');
 let authentication = require('./routes/authentication');
+let user = require('./routes/users');
 
 let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -53,16 +54,13 @@ app.route(prefix + '/assignments')
   .post(assignment.postAssignment)
   .put(assignment.updateAssignment);
 
-
 app.route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
 
-
-/**
- * Route authentication
- */
 app.use(prefix + '/authentication', authentication);
+app.use(prefix + '/users', user);
+
 
 // On démarre le serveur
 app.listen(port, "0.0.0.0");
