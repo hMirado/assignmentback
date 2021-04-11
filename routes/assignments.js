@@ -1,5 +1,5 @@
 // Assignment est le "modèle mongoose", il est connecté à la base de données
-let Assignment = require("../model/assignment");
+const Assignment = require("../model/assignment");
 
 /* Version sans pagination */
 // Récupérer tous les assignments (GET)
@@ -55,6 +55,12 @@ function postAssignment(req, res) {
   assignment.nom = req.body.nom;
   assignment.dateDeRendu = req.body.dateDeRendu;
   assignment.rendu = req.body.rendu;
+  assignment.note = req.body.note;
+  assignment.remarque = req.body.remarque;
+  assignment.matiere = req.body.matiere;
+  assignment.auteur = req.body.auteur;
+  assignment.professeur = req.body.professeur;
+  assignment.image = req.body.image;  
 
   console.log("POST assignment reçu :");
   console.log(assignment);
