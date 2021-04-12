@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
+var cors = require('cors');
 
 let assignment = require('./routes/assignments');
 let authentication = require('./routes/authentication');
@@ -22,8 +23,9 @@ const options = {
   useFindAndModify: false
 };
 
+
 mongoose.connect(uri, options)
-  .then(() => {
+    .then(() => {
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
     console.log("at URI = " + uri);
     console.log("vérifiez with http://localhost:8010/api/assignments que cela fonctionne")
