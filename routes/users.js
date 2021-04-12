@@ -8,68 +8,32 @@ const router = express.Router();
  * @type {Router}
  */
 router.post('/register', (req, res) => {
-
-    var email = req.body.email;
-    var password = req.body.password;
-    var lName = req.body.lName;
-    var fName = req.body.fName;
-    var image = req.body.image;
     var role = req.body.role;
 
-    if (!email) {
-        res.send("Veuillez saisir l'email de l'utilisateur.")
-    }
+    User.find({role: role}).countDocuments((err, userCount) => { // On recupére le nombre d'utilisateur par rapport au role
+        if (err) throw err;
 
-    if (!password) {
-        res.send("Veuillez saisir le mots de passe de l'utilisateur.")
-    }
+        let roleCourt = (role === 'professeur') ? 'prof' : (role === 'etudiant') ? 'etu' : 'admin';
 
-    if (!role) {
-        res.send("Veuillez saisir le rôle de l'utilisateur.")
-    }
+        var id = roleCourt + "0000" + (userCount+1).toString().slice(-5);
 
-    if (!lName) {
-        res.send("Veuillez saisir le rôle de l'utilisateur.")
-    }
-
-    if (email && password && role && lName) {
-        User.find({role: role}).countDocuments((err, userCount) => { // On recupére le nombre d'utilisateur par rapport au role
-            if (err) throw err;
-
-            let roleCourt = (role === 'professeur') ? 'prof' : (role === 'etudiant') ? 'etu' : 'admin';
-
-            var id = roleCourt + "0000" + (userCount+1).toString().slice(-5);
-
-            let user = new User({
-                email: email,
-                password: password,
-                lName: lName,
-                fName: fName,
-                image: image,
-                id: id,
-                role: role,
-            });
-
-            user.save((error) => {
-                if (error) {
-                    if (error.code === 11000) {
-                        res.send("L'email est déjà utilisé");
-                    }
-                    if (error.errors) {
-                        if (error.errors.password) {
-                            res.send(error.errors.password.message);
-                        } else {
-                            res.send(error);
-                        }
-                    } else {
-                        res.send("Impossible d'enregistrer l'utilisateur" + error);
-                    }
-                } else {
-                    res.json({success: true, message: "Utilisateur enregistrer"});
-                }
-            })
+        var user = new User({
+            lName: req.body.lName,
+            fName: req.body.fName,
+            email: req.body.email,
+            password: req.body.password,
+            id: id,
+            image: req.body.image,
+            role: role
         });
-    }
+
+        user.save((err) => {
+            if (err) {
+                res.send("Une erreur est survenue : ", err);
+            }
+            res.json({ message: `${user.fName} enregistrer!` });
+        });
+    });
 });
 
 
@@ -80,7 +44,6 @@ router.post('/register', (req, res) => {
  */
 router.get('/', (req, res) => {
     var role = req.query.role==="professeur"?"professeur":req.query.role==="etudiant"?"etudiant":"admin";
-    let roleCourt = (role === 'professeur') ? 'prof' : (role === 'etudiant') ? 'etu' : 'admin';
 
     /*var aggregateQuery = User.aggregate([
         {$match: {role: role}}
