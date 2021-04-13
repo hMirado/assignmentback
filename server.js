@@ -14,8 +14,8 @@ mongoose.Promise = global.Promise;
 // remplacer toute cette chaine par l'URI de connexion à votre propre base dans le cloud s
 //const uri = 'mongodb+srv://mb:P7zM3VePm0caWA1L@cluster0.zqtee.mongodb.net/assignments?retryWrites=true&w=majority';
 //const uri = 'mongodb+srv://hMirado:tsangy090197@clusterassignments.iulbf.mongodb.net/assignments?retryWrites=true&w=majority';
-//const uri = 'mongodb+srv://sedera:sederamongodb@cluster0.sqoyq.mongodb.net/assignments?retryWrites=true&w=majority';
-const uri = 'mongodb://localhost:27017/assignments';
+const uri = 'mongodb+srv://sedera:sederamongodb@cluster0.sqoyq.mongodb.net/assignments?retryWrites=true&w=majority';
+//const uri = 'mongodb://localhost:27017/assignments';
 
 const options = {
   useNewUrlParser: true,
