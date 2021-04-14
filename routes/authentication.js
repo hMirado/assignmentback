@@ -9,21 +9,37 @@ const jwt = require('jsonwebtoken');
  */
 
 function login(req, res) {
-    let assignment = new Assignment();
-    assignment.id = req.body.id;
-    assignment.nom = req.body.nom;
-    assignment.dateDeRendu = req.body.dateDeRendu;
-    assignment.rendu = req.body.rendu;
+    var email = req.body.email;
+    var password = req.body.password;
 
-    console.log("POST assignment reçu :");
-    console.log(assignment);
 
-    assignment.save((err) => {
-        if (err) {
-            res.send("cant post assignment ", err);
-        }
-        res.json({ message: `${assignment.nom} saved!` });
-    });
+    if (email && password) {
+        User.findOne({email: email}, (error, user) => {
+            if (error) {
+                res.json(error)
+            }
+            if (!user) {
+                res.json({message: "Votre email n'est assigné à aucune utilisateur"})
+            }
+            if (user) {
+                const validPassword = user.comparePassword(password);
+                if (!validPassword) {
+                    res.json({message: "Mots de passe incorrecte."})
+                } else if (user.role === 'etudiant') {
+                    res.json({message: "Pour le moment les étudiants n'ont pas encore accés au site"})
+                }
+                else {
+                    const token = jwt.sign({userId: user._id.toString()}, '123456',{expiresIn: '24h'});
+                    res.json({
+                        success: true,
+                        message: "Bonjour " + user.lName,
+                        token: token,
+                        user: {lName: user.lName, fName: user.fName, email: user.email, id: user.id, role: user.role}
+                    });
+                }
+            }
+        });
+    }
 }
 
 module.exports = {
