@@ -62,8 +62,10 @@ app.route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
 
-app.route(prefix + '/authentication').post(authentication.login);
+//app.route(prefix + '/authentication').post(authentication.login);
 
+app.use(prefix + '/authentication', authentication);
+app.use(prefix + '/users', user);
 // On démarre le serveur
 app.listen(port, "0.0.0.0");
 console.log('Serveur démarré  sur http://localhost:' + port);
