@@ -8,31 +8,20 @@ const router = express.Router();
  * @type {Router}
  */
 router.post('/register', (req, res) => {
-    var role = req.body.role;
+    let user = new User();
+    user.lName = req.body.lName;
+    user.fName = req.body.fName;
+    user.email = req.body.email;
+    user.password = req.body.password;
+    user.id = req.body.id;
+    user.image =req.body.image;
+    user.role = req.body.role;
 
-    User.find({role: role}).countDocuments((err, userCount) => { // On recupére le nombre d'utilisateur par rapport au role
-        if (err) throw err;
-
-        let roleCourt = (role === 'professeur') ? 'prof' : (role === 'etudiant') ? 'etu' : 'admin';
-
-        var id = roleCourt + "0000" + (userCount+1).toString().slice(-5);
-
-        var user = new User({
-            lName: req.body.lName,
-            fName: req.body.fName,
-            email: req.body.email,
-            password: req.body.password,
-            id: id,
-            image: req.body.image,
-            role: role
-        });
-
-        user.save((err) => {
-            if (err) {
-                res.send("Une erreur est survenue : ", err);
-            }
-            res.json({ message: `${user.fName} enregistrer!` });
-        });
+    user.save((err) => {
+        if (err) {
+            res.send("Une erreur est survenue : ", err);
+        }
+        res.json({ message: `${user.fName} enregistrer!` });
     });
 });
 
