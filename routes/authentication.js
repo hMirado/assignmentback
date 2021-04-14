@@ -25,7 +25,10 @@ router.post('/login', (req, res) => {
                 const validPassword = user.comparePassword(password);
                 if (!validPassword) {
                     res.json({message: "Mots de passe incorrecte."})
-                } else {
+                } else if (user.role === 'etudiant') {
+                    res.json({message: "Pour le moment les étudiants n'ont pas encore accés au site"})
+                }
+                else {
                     const token = jwt.sign({userId: user._id.toString()}, '123456',{expiresIn: '24h'});
                     res.json({
                        success: true,
