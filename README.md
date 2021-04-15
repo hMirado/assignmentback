@@ -5,6 +5,12 @@
 
 #
 
+### Compte admin pour se connecter
+##### Email : admin@domain.fr
+##### Mots de passe : Password1234!
+
+#
+
 ### Queries url :  
 - https://docs.mongodb.com/manual/reference/method/js-collection/
 - https://mongoosejs.com/docs/queries.html
