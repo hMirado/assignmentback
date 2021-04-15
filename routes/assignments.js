@@ -20,7 +20,7 @@ function getAssignments(req, res) {
   //var aggregateQuery = Assignment.aggregate();
   var rendu = req.query.rendu==="true"?true:false;
   console.log("valeur de rendu => "+rendu);
-  var aggregateQuery = Assignment.aggregate([{$match: {rendu:rendu}}]); 
+  var aggregateQuery = Assignment.aggregate([{$match: {rendu:rendu}}, {$sort: {_id: -1}}]);
   Assignment.aggregatePaginate(
     aggregateQuery,
     {
@@ -57,7 +57,7 @@ function postAssignment(req, res) {
   assignment.rendu = req.body.rendu;
   assignment.note = req.body.note;
   assignment.remarque = req.body.remarque;
-  assignment.matiere = req.body.matiere;
+  assignment.matiere = req.body.matieres;
   assignment.auteur = req.body.auteur;
   assignment.professeur = req.body.professeur;
   assignment.image = req.body.image;  

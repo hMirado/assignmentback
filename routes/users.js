@@ -34,26 +34,10 @@ router.post('/register', (req, res) => {
 router.get('/', (req, res) => {
     var role = req.query.role==="professeur"?"professeur":req.query.role==="etudiant"?"etudiant":"admin";
 
-    /*var aggregateQuery = User.aggregate([
-        {$match: {role: role}}
-    ]);
-    User.aggregatePaginate(
-        aggregateQuery,
-        {
-            page: parseInt(req.query.page) || 1,
-            limit: parseInt(req.query.limit) || 10,
-        },
-        (err, users) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(users);
-        }
-    );*/
     User.find({'role': role}, (err, users) => {
         if (err) res.send(err);
         res.json(users);
-    })
+    }).sort({_id: -1})
 });
 
 module.exports = router;
